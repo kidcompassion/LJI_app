@@ -25,7 +25,7 @@ $(document).ready(function(){
 				console.log(formatted);
 		       	var address_array = formatted[1].formatted_address.split(',');
 				console.log(address_array);
-		        var lji_location = address_array[0];
+		        var lji_location = address_array[1];
 				
 				
 				
@@ -58,7 +58,7 @@ $(document).ready(function(){
 					} else if ( weather.temp <= -30){
 					  var LongJohnIndex ='<p>Current Long John Index: Effin Nuts</p>';
 					} else {
-					  var LongJohnIndex ='<p>Uh oh! Looks like the interns spilled cola on the weather machine again.</p>';
+					  var LongJohnIndex ='<p>Uh oh! Looks like the intern spilled cola on the weather machine again.</p>';
 					}
 
 					//print the details for each city to its own unique div on the index page, using the index
