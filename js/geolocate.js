@@ -38,7 +38,7 @@ $(document).ready(function(){
 				    unit: 'c',
 				    success: function(weather) {
 						//return these results from Yahoo's data. docs for additional data types at http://simpleweatherjs.com/
-					  html = '<h2>'+weather.city+', ' +weather.region+'</h2>';
+					  html = '<h2>'+address_array+'</h2>';
 				      html += '<h3>'+weather.temp+'&deg;C &amp; ' +weather.currently + '</h3>';
   
 					  //if the wind chill is less than zero, then print it. otherwise, hide it
@@ -58,7 +58,7 @@ $(document).ready(function(){
 					} else if ( weather.temp <= -30){
 					  var LongJohnIndex ='<p>Current Long John Index: Effin Nuts</p>';
 					} else {
-					  var LongJohnIndex ='<p>Uh oh! Looks like Colin spilled cola on the weather machine again.</p>';
+					  var LongJohnIndex ='<p>Uh oh! Looks like the interns spilled cola on the weather machine again.</p>';
 					}
 
 					//print the details for each city to its own unique div on the index page, using the index
