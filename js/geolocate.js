@@ -23,37 +23,47 @@ $(document).ready(function(){
 
 		    url: 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+lat+','+lng+'&sensor=false',
 		    success: function(data){
-		    	$('.preloader').hide();
-		        var formatted = data.results;
+		    	console.log(data);
+	  			var city;
 
-				console.log(formatted);
-				console.log(lat + lng);
-		      /* 	var address_array = formatted[1].formatted_address.split(',');
-				console.log(address_array);
-		        var lji_location = address_array[1];
-		       
-		        var city = address_array[1];
-		        var region = address_array[2];
-		        var country = address_array[3];
-		        $('.preloader').hide();
-		         $('#location').html('You are in '+ city);*/
-				
+	  			//loop through the results for given lat and long
+	  			$.each(data.results, function(key, index){
+	  				//drill into the types method to find the one tagged locality
+	  				if ($.inArray('locality', index.types) != -1){
+	  					console.log(index.address_components);
+	  						
+	  						//loop through these components again to find locality and long name
+		  					$.each(index.address_components, function( types, names){
+		  					
+		  						if ($.inArray('locality', names.types)!= -1){
+		  							console.log(names.long_name);
+		  							city = names.long_name;
+		  						}
+		  					});
+	  				}
+
+	  			});
+
 
 				$.ajax({
-					url: 'https://api.worldweatheronline.com/free/v2/weather.ashx?q=' + lat + ',' + lng + 'q=edmonton&cc=no&showlocaltime=yes&format=json&key=07de03003eb963dedf276897040ac',
-					dataType: 'jsonp',
+				
+					url: 'http://api.wunderground.com/api/'+ config +'/geolookup/conditions/forecast/q/Canada/Edmonton.json',
+				//	url: 'https://api.worldweatheronline.com/free/v2/weather.ashx?q=' + lat + ',' + lng + 'q=' +city+ '&cc=no&showlocaltime=yes&format=json&key=07de03003eb963dedf276897040ac',
+					dataType: 'json',
 					success: function(data){
+						console.log(data);
 						var test = data.data.weather[0].hourly[0];
 						console.log(test);
+						var icon = data.data.weather[0].hourly[0].weatherIconUrl[0].value;
 						var windchill = test.WindChillC;
 						var currenttemp = test.tempC;
 						console.log('windchill' + test.WindChillC);
 						console.log('temp' + test.tempC);
-
-						$('#current').html('<p>The current temperature is ' + currenttemp+'.</p>');
+						$('#location').html('Look like you\'re in ' + city );
+						$('#current').html('<p><img src="'+ icon +'"/></p><p>The current temperature is ' + currenttemp+'. The current windchill is ' + windchill + '. </p>');
 						
 
-					  	if (currenttemp  >=0 && currenttemp >= -9 && windchill == 0 ){
+					  	if (currenttemp >= -9 && windchill >= -9 ){
 						  var LongJohnIndex = '<p>1</p>';
 						  var one = '<li>Temperature Range: 0 to – 9 Celsius ( 32 to 15.8 Fahrenheit).</li>'; 
 							one += '<li>Windchill: None.</li>';
@@ -62,7 +72,7 @@ $(document).ready(function(){
 							one += '<li><em>*Should you live in a part of the Canada not considered classically frigid, you may want to wear some Long Johns if outside for more than an hour. Looking at you, Vancouver and Toronto.</em></li>';
 							var descrip = one;
 
-						} else if ( currenttemp <= 0 && currenttemp >= -10 && windchill < 0){
+						} else if ( currenttemp >= -9 && windchill <= -10 && windchill >=-19){
 						  var LongJohnIndex = '<p>2</p>';
 						  var two = '<li>Temperature Range: Same as Above</li>';
 							two += '<li>Windchill - anything that makes the temperature feel like it is colder than -10 Celsius ( 14 Fahrenheit)</li>';
@@ -82,7 +92,7 @@ $(document).ready(function(){
 							four += '<li>Length of time you can be outside without Long Johns: 15 minutes maximum.</li>'
 							four += '<li>Explanation: At this point, there is no messing around. You should absolutely have your Long Johns on if you are spending any sort of time outside for any length of time. Doing so will not only keep you warm, but make you feel like an Astronaut, venturing out into the cold reaches of Space, though at this temperature, Space is probably warmer.</li>'; 
 							var descrip = four;
-						} else if ( currenttemp <= -29){
+						} else if ( currenttemp <= -30){
 						  var LongJohnIndex ='<p>5</p>';
 						  var five = 'Temperature Range: -30 Celsius and colder (-22 Fahrenheit and colder).';
 							five += 'Length of time you can be outside without Long Johns: 0 Seconds.';
@@ -92,8 +102,8 @@ $(document).ready(function(){
 						  var LongJohnIndex ='<p>Uh oh! Looks like the intern spilled cola on the weather machine again.</p>';
 						}
 
-						$('#weather').html('<p>Current Long John Index: ' + LongJohnIndex + '</p><ul>' + descrip + '</ul>');
-
+						$('#lji').html('<span>Current Long John Index: </span>' + LongJohnIndex);
+						$('#description').html('<h2>What a Long John Index of '+ LongJohnIndex +'Means:</h2><ul>' + descrip + '</ul>');
 			
 					},
 					error: function(data){

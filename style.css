@@ -1,17 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,900,700);
 
-body {
-  font-family: 'futura', sans-serif;
-  background: #3284c3;
-  color: #fff;
-  font-size: 16px;
-}
-
-
-.wrapper {
-  width: 90%;
-  margin: 100px auto;
-  position: relative;
-}
 
 .preloader {
   position: absolute;
@@ -95,10 +83,35 @@ body {
   }
 }
 
-#weather {
-  font-size: 2em;
+html{
+  height: 100%;
 }
 
-#location {
+body {
+  background-image: url('images/bg.jpg'); 
+  font-family: 'Lato', sans-serif;
+  color: #0672ba;
+  font-size: 16px;
+}
+
+.current-lji {
+  text-align: center;
+}
+
+.current-lji span{
   font-size: 2em;
+
+}
+
+.current-lji p{
+   font-size: 8em;
+   font-weight: 900;
+}
+
+
+
+.left-screen {
+  background-color: #0672ba;
+  color: #fff;
+  height: 100vh;
 }
